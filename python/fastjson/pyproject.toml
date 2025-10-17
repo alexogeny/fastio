@@ -1,0 +1,50 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "fastjson"
+version = "0.1.0"
+description = "SIMD-accelerated JSON utilities for Python"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "FastIO Contributors" }]
+license = { text = "MIT OR Apache-2.0" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://example.com/fastio"
+Repository = "https://example.com/fastio"
+
+[tool.maturin]
+features = ["extension-module"]
+module-name = "fastjson._fastjson"
+python-source = "src"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest",
+    "hypothesis",
+    "ruff",
+    "ty>=0.9",
+]
+
+[tool.ruff]
+line-length = 100
+src = ["src"]
+
+[tool.ty]
+python-version = "3.11"

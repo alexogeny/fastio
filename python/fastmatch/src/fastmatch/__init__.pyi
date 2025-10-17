@@ -1,0 +1,6 @@
+from collections.abc import Iterable
+from typing import Optional, Tuple
+
+class Router:
+    def __init__(self, routes: Iterable[tuple[str, str, int]], *, case_sensitive: bool = ...) -> None: ...
+    def lookup(self, method: str, host: Optional[str], path: str) -> tuple[int, list[tuple[str, str]]]: ...
