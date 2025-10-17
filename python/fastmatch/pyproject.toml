@@ -1,48 +1,15 @@
 [build-system]
-requires = ["maturin>=1.7,<2.0"]
+requires = ["maturin>=1"]
 build-backend = "maturin"
 
 [project]
 name = "fastmatch"
 version = "0.1.0"
-description = "High-performance router for ASGI servers"
-readme = "README.md"
 requires-python = ">=3.9"
-authors = [{ name = "FastIO Contributors" }]
-license = { text = "MIT OR Apache-2.0" }
-classifiers = [
-    "Framework :: AsyncIO",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Rust",
-]
-dependencies = []
-
-[project.urls]
-Homepage = "https://example.com/fastio"
-Repository = "https://example.com/fastio"
+classifiers = ["Programming Language :: Python :: 3"]
 
 [tool.maturin]
-features = ["extension-module"]
+bindings = "pyo3"
 module-name = "fastmatch._fastmatch"
-python-source = "src"
-
-[tool.uv]
-dev-dependencies = [
-    "pytest",
-    "hypothesis",
-    "ruff",
-    "ty>=0.9",
-]
-
-[tool.ruff]
-line-length = 100
-src = ["src"]
-
-[tool.ty]
-python-version = "3.11"
+python-source = "python"
+manifest-path = "../../crates/fastmatch/Cargo.toml"

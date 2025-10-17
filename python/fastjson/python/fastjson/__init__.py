@@ -1,6 +1,4 @@
-"""fastjson public API."""
-
-from __future__ import annotations
+"""Python bindings for the fastjson extension."""
 
 from ._fastjson import dumps, loads
 

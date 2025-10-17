@@ -2,22 +2,11 @@
 name = "fastmatch"
 version = "0.1.0"
 edition = "2021"
-description = "Fast router for ASGI servers"
 license = "MIT OR Apache-2.0"
-repository = "https://example.com/fastio"
-readme = "README.md"
-authors = ["FastIO Contributors"]
 
 [lib]
 name = "fastmatch"
-crate-type = ["cdylib", "rlib"]
-
-[features]
-default = ["extension-module"]
-extension-module = ["pyo3/extension-module", "pyo3/abi3", "pyo3/abi3-py39"]
+crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.21", features = ["macros"] }
-regex = "1"
-thiserror = "1"
-serde = { version = "1", features = ["derive"] }
+pyo3 = { version = "0.22", features = ["extension-module"] }

@@ -2,20 +2,11 @@
 name = "fastform"
 version = "0.1.0"
 edition = "2021"
-description = "Form parsing utilities"
 license = "MIT OR Apache-2.0"
-repository = "https://example.com/fastio"
-readme = "README.md"
-authors = ["FastIO Contributors"]
 
 [lib]
 name = "fastform"
-crate-type = ["cdylib", "rlib"]
-
-[features]
-default = ["extension-module"]
-extension-module = ["pyo3/extension-module", "pyo3/abi3", "pyo3/abi3-py39"]
+crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.21", features = ["macros"] }
-memchr = { version = "2", features = ["std", "use_std"] }
+pyo3 = { version = "0.22", features = ["extension-module"] }
