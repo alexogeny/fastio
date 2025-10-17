@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "crates/fastjson",
+    "crates/fastmatch",
+    "crates/fastcomp",
+    "crates/fastform",
+    "crates/fastrate"
+]
+resolver = "2"
