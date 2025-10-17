@@ -1,0 +1,58 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('python/**/pyproject.toml') }}
+      - name: Install build tools
+        run: pip install maturin pytest pyperf
+      - name: Build fastjson wheel
+        working-directory: python/fastjson
+        run: |
+          maturin build
+          maturin sdist
+      - name: Run tests
+        working-directory: python/fastjson
+        run: |
+          maturin develop
+          cd ../..
+          pytest -q
+      - name: Run benchmark (non-blocking)
+        working-directory: python/fastjson
+        continue-on-error: true
+        run: |
+          maturin develop
+          cd ../..
+          python bench/bench_fastjson.py

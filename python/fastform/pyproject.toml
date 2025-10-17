@@ -1,42 +1,15 @@
 [build-system]
-requires = ["maturin>=1.7,<2.0"]
+requires = ["maturin>=1"]
 build-backend = "maturin"
 
 [project]
 name = "fastform"
 version = "0.1.0"
-description = "Form parsing helpers for ASGI frameworks"
-readme = "README.md"
 requires-python = ">=3.9"
-authors = [{ name = "FastIO Contributors" }]
-license = { text = "MIT OR Apache-2.0" }
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Rust",
-]
-dependencies = []
-
-[project.urls]
-Homepage = "https://example.com/fastio"
-Repository = "https://example.com/fastio"
+classifiers = ["Programming Language :: Python :: 3"]
 
 [tool.maturin]
-features = ["extension-module"]
+bindings = "pyo3"
 module-name = "fastform._fastform"
-python-source = "src"
-
-[tool.uv]
-dev-dependencies = [
-    "pytest",
-    "hypothesis",
-    "ruff",
-    "ty>=0.9",
-]
-
-[tool.ruff]
-line-length = 100
-src = ["src"]
-
-[tool.ty]
-python-version = "3.11"
+python-source = "python"
+manifest-path = "../../crates/fastform/Cargo.toml"

@@ -1,13 +1,20 @@
 # FastIO
 
-FastIO is a collection of Rust-accelerated Python extensions designed for high-performance ASGI servers. The repository hosts shared Rust crates and Python packages for JSON processing, routing, compression, form parsing, and rate limiting.
+FastIO is a workspace that collects five PyO3-based crates and matching Python packages:
 
-## Repository Layout
+- `fastjson`
+- `fastmatch`
+- `fastcomp`
+- `fastform`
+- `fastrate`
+
+Each crate compiles to a CPython extension module using `maturin`, and each Python package re-exports the Rust functions. The goal of this change set is to provide the initial scaffold and a passing test for `fastjson`.
+
+## Repository layout
 
 ```
 fastio/
 ├── Cargo.toml
-├── rust-toolchain.toml
 ├── crates/
 │   ├── fastjson/
 │   ├── fastmatch/
@@ -21,30 +28,28 @@ fastio/
 │   ├── fastform/
 │   └── fastrate/
 ├── bench/
-├── ci/
-└── examples/
+├── examples/
+└── tests/
 ```
 
-Each crate exports a PyO3-powered module and is published as an independent Python distribution via `maturin`. The Python packages include light shims, type hints, and documentation. Benchmarks and examples demonstrate typical ASGI integrations.
+## Local development
 
-## Getting Started
-
-Install the Rust toolchain and Python tooling with [`uv`](https://docs.astral.sh/uv/):
+From the repository root:
 
 ```bash
-uv python install 3.11
-uv tool install maturin
-```
-
-Build an extension module in editable mode from a package directory, for example `fastjson`:
-
-```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install maturin pytest
 cd python/fastjson
-uv pip install -e .
+maturin develop
+cd ../..
+pytest -q
 ```
 
-Run the test suite with `pytest` and `cargo nextest`, and use `ruff`, `ty`, `cargo fmt`, and `clippy` to maintain code quality.
+## Continuous integration
+
+The GitHub Actions workflow in `.github/workflows/build.yml` builds wheels for `fastjson` across Python 3.9–3.13 on Linux, macOS, and Windows, runs the unit tests, and produces an sdist artifact.
 
 ## License
 
-Dual licensed under either MIT or Apache 2.0.
+This project is dual licensed under MIT or Apache-2.0.
