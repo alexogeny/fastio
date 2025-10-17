@@ -50,6 +50,12 @@ fn py_to_value(obj: &PyAny) -> PyResult<Value> {
         if let Ok(v) = obj.extract::<u64>() {
             return Ok(Value::Number(v.into()));
         }
+        let string_repr = obj.str()?.to_str()?.to_owned();
+        let parsed: Value = serde_json::from_str(&string_repr)
+            .map_err(|_| PyValueError::new_err("integer out of range"))?;
+        if let Value::Number(number) = parsed {
+            return Ok(Value::Number(number));
+        }
         return Err(PyValueError::new_err("integer out of range"));
     }
     if obj.is_instance_of::<PyFloat>() {
@@ -100,7 +106,11 @@ fn value_to_py(py: Python<'_>, value: &Value) -> PyResult<PyObject> {
             } else if let Some(f) = num.as_f64() {
                 f.into_py(py)
             } else {
-                return Err(PyValueError::new_err("unsupported number"));
+                let builtins = py.import("builtins")?;
+                let int_ctor = builtins.getattr("int")?;
+                let number_string = num.to_string();
+                let py_int = int_ctor.call1((PyString::new(py, &number_string),))?;
+                py_int.into_py(py)
             }
         }
         Value::String(s) => PyString::new(py, s).into_py(py),
